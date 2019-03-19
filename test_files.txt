@@ -1,0 +1,10 @@
+data/lj/LJ001-0001.wav
+data/lj/LJ001-0002.wav
+data/lj/LJ001-0003.wav
+data/lj/LJ001-0004.wav
+data/lj/LJ001-0005.wav
+data/lj/LJ001-0006.wav
+data/lj/LJ001-0007.wav
+data/lj/LJ001-0008.wav
+data/lj/LJ001-0009.wav
+data/lj/LJ001-0010.wav
