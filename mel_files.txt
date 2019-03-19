@@ -1,2 +1,1 @@
-inputMels/input1.wav.pt
-inputMels/CarAlarm.wav.pt
+mel_spectrograms/LJ001-0063.wav.pt
