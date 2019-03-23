@@ -12,10 +12,10 @@
 #        names of its contributors may be used to endorse or promote products
 #        derived from this software without specific prior written permission.
 #
-#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-#  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-#  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#  DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+#  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+#  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+#  ARE DISCLAIMED. IN NO EVENT SHALL NVIDIA CORPORATION BE LIABLE FOR ANY
 #  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 #  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 #  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -28,6 +28,7 @@ import os
 from scipy.io.wavfile import write
 import torch
 from mel2samp import files_to_list, MAX_WAV_VALUE
+from denoiser import Denoiser
 
 
 def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
@@ -66,7 +67,7 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
 
 if __name__ == "__main__":
     import argparse
-    print("inference py is loading...")
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', "--filelist_path", required=True)
     parser.add_argument('-w', '--waveglow_path',
@@ -79,5 +80,6 @@ if __name__ == "__main__":
                         help='Removes model bias. Start with 0.1 and adjust')
 
     args = parser.parse_args()
+
     main(args.filelist_path, args.waveglow_path, args.sigma, args.output_dir,
          args.sampling_rate, args.is_fp16, args.denoiser_strength)
