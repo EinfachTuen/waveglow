@@ -1,1 +1,4 @@
-mel_spectrograms/LJ001-0063.wav.pt
+inputMels/bbad4n.wav.pt
+mel_spectrograms/arctic_indian_man16.wav.pt
+mel_spectrograms/singAwomen16.wav.pt
+mel_spectrograms/manTest_16.wav.pt
