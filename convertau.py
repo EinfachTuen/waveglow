@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 # Store all command line args in genre_dirs
 genre_dirs = sys.argv[1:]
+target_dir = sys.argv[2:]
 
 for genre_dir in genre_dirs:
 
@@ -27,7 +28,8 @@ for genre_dir in genre_dirs:
 		print(format(path))
 		print('path')
 		file = format(path)+'/'+genre_dir+'/'+file
+		output = format(path)+'/'+target_dir+'/'+file
 		print(file)
-		os.system("sox " + str(file) + " -r 16000 " +"/16/"+ str(file[:-3]) + ".wav")
+		os.system("sox " + str(file) + " -r 16000 " + str(file[:-4]) + ".wav")
 
 print("Conversion complete. Check respective directories.")
