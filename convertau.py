@@ -27,9 +27,9 @@ for genre_dir in genre_dirs:
 	
 		print(format(path))
 		print('path')
-		file = format(path)+'/'+genre_dir+'/'+file
+		input = format(path)+'/'+genre_dir+'/'+file
 		output = format(path)+'/'+target_dir+'/'+file
 		print(file)
-		os.system("sox " + str(file) + " -r 16000 " + str(file[:-4]) + ".wav")
+		os.system("sox " + str(input) + " -r 16000 " + str(output[:-4]) + ".wav")
 
 print("Conversion complete. Check respective directories.")
