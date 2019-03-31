@@ -37,6 +37,8 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import DataLoader
 from glow import WaveGlow, WaveGlowLoss
 from mel2samp import Mel2Samp
+from tensorboardX import SummaryWriter
+
 
 def load_checkpoint(checkpoint_path, model, optimizer):
     assert os.path.isfile(checkpoint_path)
@@ -103,7 +105,7 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
             os.makedirs(output_directory)
             os.chmod(output_directory, 0o775)
         print("output directory", output_directory)
-
+    writer = SummaryWriter()
     model.train()
     epoch_offset = max(0, int(iteration / len(train_loader)))
     # ================ MAIN TRAINNIG LOOP! ===================
@@ -125,6 +127,7 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
             loss.backward()
             optimizer.step()
 
+            writer.add_histogram("loss", reduced_loss, iteration)
             print("{}:\t{:.9f}".format(iteration, reduced_loss))
 
             if (iteration % iters_per_checkpoint == 0):
@@ -135,6 +138,7 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
                                     checkpoint_path)
 
             iteration += 1
+    writer.close();
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
