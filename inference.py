@@ -31,9 +31,9 @@ from mel2samp import files_to_list, MAX_WAV_VALUE
 from denoiser import Denoiser
 
 
-def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
+def main(inputMels, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
          denoiser_strength):
-    mel_files = files_to_list(mel_files)
+    mel_files = inputMels
     waveglow = torch.load(waveglow_path)['model']
     waveglow = waveglow.remove_weightnorm(waveglow)
     waveglow.cuda().eval()
@@ -47,6 +47,7 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
 
     for i, file_path in enumerate(mel_files):
         file_name = os.path.splitext(os.path.basename(file_path))[0]
+        print("file_name is ", file_name)
         mel = torch.load(file_path)
         mel = torch.autograd.Variable(mel.cuda())
         mel = torch.unsqueeze(mel, 0)
@@ -65,21 +66,44 @@ def main(mel_files, waveglow_path, sigma, output_dir, sampling_rate, is_fp16,
         print(audio_path)
 
 
+def newest(path):
+        files = os.listdir(path)
+        paths = [os.path.join(path, basename) for basename in files]
+        full_path = max(paths, key=os.path.getctime)
+
+        return full_path
+
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--filelist_path", required=True)
-    parser.add_argument('-w', '--waveglow_path',
-                        help='Path to waveglow decoder checkpoint with model')
-    parser.add_argument('-o', "--output_dir", required=True)
-    parser.add_argument("-s", "--sigma", default=1.0, type=float)
-    parser.add_argument("--sampling_rate", default=22050, type=int)
+    parser.add_argument('-f', "--mel_path", default="mels16k")
+    parser.add_argument("-s", "--sigma", default=0.6, type=float)
+    parser.add_argument("--sampling_rate", default=16000, type=int)
     parser.add_argument("--is_fp16", action="store_true")
-    parser.add_argument("-d", "--denoiser_strength", default=0.0, type=float,
+    parser.add_argument("-d", "--denoiser_strength", default=0.1, type=float,
                         help='Removes model bias. Start with 0.1 and adjust')
 
     args = parser.parse_args()
 
-    main(args.filelist_path, args.waveglow_path, args.sigma, args.output_dir,
+    checkpoint_path = newest("./checkpoints")
+    print("loaded model is "+checkpoint_path)
+    splitCheckpointPath = "".join((map(str, checkpoint_path.split("_")[1:])))
+    splitCheckpointPath = splitCheckpointPath.replace("/", "")
+    output_dir = "./output_" + str(splitCheckpointPath)
+    print("output_dir is ", output_dir)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    mel_folder_files= os.listdir(args.mel_path)
+    input_mels = []
+    for file in mel_folder_files:
+        if ".pt" in file:
+            input_mels.append(os.path.join(args.mel_path, file))
+        if ".npy" in file:
+            input_mels.append(os.path.join(args.mel_path, file))
+
+    print(input_mels)
+    main(input_mels, checkpoint_path, args.sigma, output_dir,
          args.sampling_rate, args.is_fp16, args.denoiser_strength)

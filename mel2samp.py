@@ -47,6 +47,7 @@ def files_to_list(filename):
         files = f.readlines()
 
     files = [f.rstrip() for f in files]
+    print(files)
     return files
 
 def load_wav_to_torch(full_path):
