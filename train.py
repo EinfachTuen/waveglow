@@ -128,6 +128,9 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
             optimizer.step()
 
             writer.add_histogram("loss", reduced_loss, iteration)
+            log_file = open('loss_log.txt', 'a')
+            log_file.write(str(iteration)+","+"{:.4f}".format(reduced_loss)+',\n')
+
             print("{}:\t{:.9f}".format(iteration, reduced_loss))
 
             if (iteration % iters_per_checkpoint == 0):

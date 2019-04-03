@@ -1,1 +1,10 @@
-data/bbad4n.wav
+data/drums/MaxV - CLAVE.wav
+data/drums/MaxV - Clave2.wav
+data/drums/MaxV - Cowbell.wav
+data/drums/MaxV - Cymbal.wav
+data/drums/MaxV - HHCL.wav
+data/drums/MaxV - HHCL2.wav
+data/drums/MaxV - HHOP.wav
+data/drums/MaxV - KICK1.wav
+data/drums/MaxV - KICK2.wav
+data/drums/MaxV - KICK3.wav
